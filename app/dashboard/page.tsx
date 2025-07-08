@@ -1,8 +1,11 @@
+import BlogDashboard from '@/components/dashboard/blog-dashboard'
 import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>
+      <BlogDashboard />
+    </div>
   )
 }
 
