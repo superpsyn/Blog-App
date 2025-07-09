@@ -5,6 +5,9 @@ import { Avatar, AvatarImage } from '../ui/avatar'
 import { AvatarFallback } from '@radix-ui/react-avatar'
 import LikeButton from './like-button'
 import CommentList from '../comments/comment-list'
+import CommentInput from '../comments/comment-input'
+import { prisma } from '@/lib/prisma'
+import { auth } from '@clerk/nextjs/server'
 
 type ArticleDetailPageProps = {
     article : Prisma.ArticlesGetPayload<{
@@ -21,7 +24,36 @@ type ArticleDetailPageProps = {
 }
 
 
-const ArticleDetailPage:React.FC<ArticleDetailPageProps> = ({article}) => {
+const ArticleDetailPage:React.FC<ArticleDetailPageProps> = async ({article}) => {
+
+    const comments = await prisma.comment.findMany({
+        where: {
+            articleId: article.id
+        },
+        include: {
+            author: {
+                select: {
+                    name: true,
+                    email:true,
+                    imageUrl: true
+                }
+            }
+        }
+    })
+
+    const likes = await prisma.like.findMany({
+        where: {articleId: article.id}
+    });
+    const {userId} = await auth(); 
+
+    const user = await prisma.user.findUnique({
+        where: {
+            clerkUserId: userId as string
+        }
+    });
+
+    const isLiked: boolean = likes.some((like) => like.userId === user?.id);
+
   return (
     <div className='min-h-screen bg-background'>
         <main className='container mx-auto py-12 px-4 sm:px-6 lg:px-8'>
@@ -56,11 +88,13 @@ const ArticleDetailPage:React.FC<ArticleDetailPageProps> = ({article}) => {
 
                 {/* Article action button */}
                 
-                <LikeButton />
+                <LikeButton articleId={article.id} likes={likes} isLiked={isLiked} />
                 
                 {/* Comment section */}
 
-                <CommentList />
+                <CommentInput articleId={article.id}/>
+
+                <CommentList comments={comments}/>
 
             </article>
         </main>
