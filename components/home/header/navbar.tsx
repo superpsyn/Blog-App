@@ -1,6 +1,6 @@
-"use client";
+'use client';
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "../../ui/button";
 import SearchInput from "./search-input";
 import ToggleMode from "./toggle-mode";
@@ -64,7 +64,9 @@ export default function Navbar() {
 
           {/* Right section */}
           <div className="flex items-center gap-4">
-            <SearchInput />
+            <Suspense>
+              <SearchInput />
+            </Suspense>
             <ToggleMode />
 
             {/* User Actions */}
@@ -149,16 +151,16 @@ export default function Navbar() {
 
           {/* Mobile Auth Buttons */}
           <SignedOut>
-          <div className="px-4 flex flex-col gap-2">
-            <SignInButton>
-            <Button variant="outline" className="w-full">
-              Login
-            </Button>
-            </SignInButton>
-            <SignUpButton>
-            <Button className="w-full">Sign up</Button>
-            </SignUpButton>
-          </div>
+            <div className="px-4 flex flex-col gap-2">
+              <SignInButton>
+                <Button variant="outline" className="w-full">
+                  Login
+                </Button>
+              </SignInButton>
+              <SignUpButton>
+                <Button className="w-full">Sign up</Button>
+              </SignUpButton>
+            </div>
           </SignedOut>
         </div>
       )}
