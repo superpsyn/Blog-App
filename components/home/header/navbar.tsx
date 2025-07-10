@@ -43,13 +43,13 @@ export default function Navbar() {
               Articles
             </Link>
             <Link
-              href={"/tutorial"}
+              href={"/"}
               className="text-sm font-medium text-foreground transition-colors hover:text-foreground"
             >
               Tutorial
             </Link>
             <Link
-              href={"/about"}
+              href={"/"}
               className="text-sm font-medium text-foreground transition-colors hover:text-foreground"
             >
               About
@@ -125,14 +125,14 @@ export default function Navbar() {
               Articles
             </Link>
             <Link
-              href="/tutorials"
+              href="#"
               className="block px-3 py-2 text-base font-medium text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Tutorials
             </Link>
             <Link
-              href="/about"
+              href="#"
               className="block px-3 py-2 text-base font-medium text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
@@ -148,18 +148,18 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Auth Buttons */}
-          {/* <SignedOut> */}
+          <SignedOut>
           <div className="px-4 flex flex-col gap-2">
-            {/* <SignInButton> */}
+            <SignInButton>
             <Button variant="outline" className="w-full">
               Login
             </Button>
-            {/* </SignInButton>
-                <SignUpButton> */}
+            </SignInButton>
+            <SignUpButton>
             <Button className="w-full">Sign up</Button>
-            {/* </SignUpButton> */}
+            </SignUpButton>
           </div>
-          {/* </SignedOut> */}
+          </SignedOut>
         </div>
       )}
     </div>

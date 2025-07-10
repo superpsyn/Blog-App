@@ -5,6 +5,7 @@ import TopArticles from "@/components/home/top-articles";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { BlogFooter } from "@/components/home/blog-footer";
+import { AllArticlesPageSkeleton } from "../articles/page";
 
 export default function Home() {
   return (
@@ -22,7 +23,7 @@ export default function Home() {
               <p>Discover our most popular and trending content</p>
             </div>
 
-            <Suspense fallback={<h1>Loading...</h1>}>
+            <Suspense fallback={<AllArticlesPageSkeleton />}>
             <TopArticles />
             </Suspense>
 

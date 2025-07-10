@@ -8,7 +8,7 @@ export const likeDislikeToggle = async (articleId: string) => {
   const { userId } = await auth();
 
   if (!userId) {
-    throw new Error("You must be logged in to like an article");
+    return { success: false, error: "You must be logged in to like an article" };
   }
 
   const user = await prisma.user.findUnique({
@@ -18,7 +18,7 @@ export const likeDislikeToggle = async (articleId: string) => {
   });
 
   if (!user) {
-    throw new Error("User doesn't exist");
+    return { success: false, error: "User doesn't exist" };
   }
 
   const existingLike = await prisma.like.findFirst({
@@ -45,4 +45,5 @@ export const likeDislikeToggle = async (articleId: string) => {
   }
 
   revalidatePath(`/articles/${articleId}`)
+  return { success: true };
 };

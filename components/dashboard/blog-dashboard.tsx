@@ -10,12 +10,6 @@ import { prisma } from "@/lib/prisma";
 
 async function BlogDashboard() {
 
-  
-
-  
-
-  
-
   const [articles, totalComments] = await Promise.all([
     prisma.articles.findMany({
       orderBy: {

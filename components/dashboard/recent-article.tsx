@@ -1,5 +1,6 @@
 "use client";
-import React, {  useTransition } from "react";
+
+import React, { useState, useTransition } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import {
@@ -59,10 +60,14 @@ const RecentArticles: React.FC<RecentArticlesProps> = ({ articles }) => {
             <TableBody>
               {articles.map((article) => (
                 <TableRow key={article.id}>
-                  <TableCell>{article.title}</TableCell>
+                  <TableCell>
+                    <Link href={`/articles/${article.id}`} className="hover:underline">
+                      {article.title}
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     <Badge
-                      variant={"secondary"}
+                      variant="secondary"
                       className="rounded bg-green-100 text-green-800"
                     >
                       Published
@@ -71,9 +76,9 @@ const RecentArticles: React.FC<RecentArticlesProps> = ({ articles }) => {
                   <TableCell>{article.comments.length}</TableCell>
                   <TableCell>{article.createdAt.toDateString()}</TableCell>
                   <TableCell>
-                    <div className="flex gap-0">
+                    <div className="flex gap-2">
                       <Link href={`/dashboard/articles/${article.id}/edit`}>
-                        <Button variant={"ghost"} size={"sm"}>
+                        <Button variant="ghost" size="sm">
                           Edit
                         </Button>
                       </Link>
@@ -97,21 +102,30 @@ type DeleteButtonProps = {
 };
 
 const DeleteButton: React.FC<DeleteButtonProps> = ({ articleId }) => {
-  const [ isPending, startTransition ] = useTransition(); 
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+
+  const handleDelete = () => {
+    setError(null);
+    startTransition(async () => {
+      const result = await deleteArticle(articleId);
+      if (!result?.success) {
+        setError(result?.error || "Failed to delete.");
+      }
+    });
+  };
 
   return (
     <div>
-      <form
-        action={() => {
-          startTransition(async () => {
-            await deleteArticle(articleId);
-          });
-        }}
+      <Button
+        disabled={isPending}
+        onClick={handleDelete}
+        variant="ghost"
+        size="sm"
       >
-        <Button disabled={isPending} variant={"ghost"} size={"sm"} type="submit">
-          {isPending ? "Loading..." : "Delete"}
-        </Button>
-      </form>
+        {isPending ? "Deleting..." : "Delete"}
+      </Button>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };

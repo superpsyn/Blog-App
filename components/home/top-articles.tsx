@@ -56,11 +56,11 @@ async function TopArticles() {
                 {article.title}
               </h3>
               <p className="mt-2 text-gray-600 dark:text-gray-300">
-                {article.category}
+                {article.category.toUpperCase()}
               </p>
               <div className="mt-6 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                 <span>{article.createdAt.toDateString()}</span>
-                <span>{12} min to read</span>
+                <span>{5} min to read</span>
               </div>
             </Link>
           </div>
